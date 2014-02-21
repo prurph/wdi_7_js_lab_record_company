@@ -1,56 +1,50 @@
-# Javascript Record Company
-We're going to use JavaScript to create an application that will allow
-a record company to manage their artists and albums. 
+# JavaScript Record Company
 
-## Main Page (Dashboard)
+We're going to use JavaScript to create an application that will allow a record company to manage their artists and albums. 
+
+## Main page (dashboard)
+
 This page will show the 'Dashboard' for a specific record company. It will contain a list of Artists and Albums. 
 
-The Record Company *may* have one or more of Artists.
+The Record Company *may* have one or more Artists.
 
-The Record Company *may* have one or more of Albums.
+The Record Company *may* have one or more Albums.
 
 An Artist *may* have played on one or more albums.
 
 An Album *must* have one or more Artists.
 
-
-
 ## Artist management
-1. A User can create an Artist with a name and description. This Artist's name will be added to the companies list of artists after creation. 
+
+1. A User can add an Artist with a name and description. After creation the Artist name will be shown in the list of artists.
 2. A User can delete a a specific Artist from the list of artists.
-3. A User can show or hide each Artist's details, name, description and a list of all the Albums the artist has played on.
-4. A User can select an Album that the Artist has played on in the Artist detailed view.
+3. A User can show or hide each Artist's details (description and a list of all the Albums the artist has played on).
+4. A User can add Albums that an Artist has played on within each Artist's detail view.
 
 ## Album management
 
-1. A User can create an Album with a name, band name and year released. After creation the Album name will be shown in the list of Albums.
+1. A User can create an Album with a name, band name, and year released. After creation the Album name will be shown in the list of Albums.
 2. A User can delete a specific Album from the list of albums.
-3. A User can show or hide a details view of an album.
+3. A User can show or hide each Album's details (band name, year released, and a list of all Artists on the album).
 
-## Technical Constraints.
-* Use javascript classes to represent a Record Company, Artist and Album.
+## Technical constraints
 
-* Make sure everything is namespaced under 'RCApp'.
+* Use JavaScript classes to represent the Record Company, Artists, and Albums.
 
-* Event handlers for Album/Artist show, hide and delete should be set 
- their respective lists.
+* All classes and functions should be namespaced under 'RCApp'.
 
-* The Album selection handler *may* be attached to a specific instance of an Artist class.
+* Individual Albums and Artists should *not* have event handlers for show, hide, and delete. The handlers should be attached to the appropriate lists.
 
-* No inline event handlers.
+* Individual Artists *may* have event handlers for selecting which albums they have played on.
 
-* Javascript tags must be in the head of the document, _use window.onload_.
+* No inline event handlers in the HTML.
 
-* Each Artist and Album list element *must* have an id.
+* JavaScript tags must be in the head of the document (use `window.onload`).
 
-* Each list item, for a specific artist or album, *must* have a unique id.
+* Each Artist and Album list element *must* have a unique `id`.
 
 * Not much styling is required, but knock yourself out if you'd like.
 
-* Don't reference any hard coded values in your javascript classes to identify an element.
+* Don't reference any hard-coded values in your JavaScript classes to identify an element.
 
 * Use CSS classes to hide or show individual Artist or Albums.
-
-
-
-
