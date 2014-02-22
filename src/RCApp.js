@@ -187,7 +187,7 @@ RCApp.renderCollection = function(itemType, itemId) {
       selectForm,
       collectionType;
 
-  collectionType = item.collectType;
+  collectionType = item.collectionType;
   itemNode.classList.add("inner-list");
 
   item.collection.forEach(function (objuid, index, array) {
@@ -235,4 +235,39 @@ RCApp.renderLists = function(listType) { // "artists" or "albums"
     itemNode.insertAdjacentHTML("afterend", "</li>");
     listNode.appendChild(itemNode);
   });
+}
+
+// Render a single "card" (artist or album): renderSelf() for each just calls this)
+// type is "albums" or "artists"
+RCApp.renderCard = function(type, headerNode, detailNode, thisObj) {
+  var cardNode = document.createElement("div"),
+      idType;
+
+  idType = (type === "albums") ? "album_" : "artist_";
+
+  cardNode.setAttribute("id", idType + thisObj.uid);
+  cardNode.classList.add("card");
+  cardNode.appendChild(headerNode);
+
+  detailNode.appendChild(RCApp.renderCollection(type, thisObj.uid))
+  cardNode.appendChild(detailNode);
+
+  cardNode.addEventListener("click", function(event) {
+    if (event.target.classList.contains("plus")) {
+      var clickedId = parseInt(event.target.previousElementSibling.value),
+      notInCollection;
+
+      notInCollection = thisObj.collection.every(function(collobjuid, index, array){
+        return (collobjuid != clickedId);
+      });
+
+      if (notInCollection) {
+        RCApp.updateCollection(type, thisObj.uid, thisObj.collectionType, clickedId);
+        RCApp.updateCollection(thisObj.collectionType, clickedId, type, thisObj.uid);
+        RCApp.renderLists("albums");
+        RCApp.renderLists("artists");
+      }
+    }
+  }, false);
+  return cardNode;
 }

@@ -8,7 +8,7 @@ RCApp.artist = function(name, desc) {
   this.uid         = RCApp.uid("artist");
   this.albums      = []; // String list of albums
   this.collection  = []; // albumuids
-  this.collectType = "albums";
+  this.collectionType = "albums";
 };
 
 RCApp.artist.prototype = {

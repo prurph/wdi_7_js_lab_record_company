@@ -8,78 +8,16 @@ RCApp.album = function(title, year, artistuid) {
   this.uid         = RCApp.uid("album");
   //this.artists    = [artist]; // String list of artists
   this.collection  = [];
-  this.collectType = "artists";
+  this.collectionType = "artists";
 };
 
 RCApp.album.prototype = {
   renderSelf: function() {
-    var albumNode  = document.createElement("div"),
-        headerNode = this.htmlElements.header.bind(this)(), // h3 with title
-        detailNode = this.htmlElements.detail.bind(this)(), // h4 with description
-        thisAlbum = this;
-
-    albumNode.setAttribute("id", "album_" + this.uid);
-    albumNode.classList.add("album-card");
-    albumNode.appendChild(headerNode);
-
-    detailNode.appendChild(RCApp.renderCollection("albums", this.uid));
-    albumNode.appendChild(detailNode);
-
-    albumNode.addEventListener("click", function(event) {
-      // if clicked on plus user is trying to add an album
-      if (event.target.classList.contains("plus")) {
-        var clickedArtistId = parseInt(event.target.previousElementSibling.value), // uid of artist dropdown
-            // whichArtistId   = event.currentTarget.id, // uid of the artist to add to
-            notInCollection;
-
-        // every returns true if there is not a matching album in collection already
-        notInCollection = thisAlbum.collection.every(function(artistuid, index, array) {
-          return (artistuid !== clickedArtistId);
-        });
-
-        if (notInCollection) {
-          RCApp.updateCollection("albums", thisAlbum.uid, "artists", clickedArtistId);
-          RCApp.updateCollection("artists", clickedArtistId, "albums", thisAlbum.uid)
-          RCApp.renderLists("albums");
-          RCApp.renderLists("artists");
-        }
-      }
-    }, false);
-    return albumNode;
+    var headerNode = this.htmlElements.header.bind(this)(),
+        detailNode = this.htmlElements.detail.bind(this)(),
+        thisAlbum  = this;
+    return RCApp.renderCard("albums", headerNode, detailNode, thisAlbum);
   },
-  // renderSelf: function() {
-  //   var albumNode  = document.createElement("div"),
-  //       detailNode = this.htmlElements.detail.bind(this)(),
-  //       thisAlbum  = this,
-  //       myArtists;
-
-  //   albumNode.setAttribute("id", "album_" + this.uid);
-  //   albumNode.appendChild(this.htmlElements.header.bind(this)());
-
-  //   // renderArtists() and tack onto detailNode
-  //   myArtists = this.renderArtists();
-  //   detailNode.appendChild(myArtists);
-
-  //   albumNode.appendChild(detailNode);
-  //   albumNode.addEventListener("click", function(event) {
-  //     if (event.target.classList.contains("plus")) {
-  //       var whichArtist  = event.target.previousElementSibling.value,
-  //           whichAlbum = event.currentTarget.id,
-  //           notAdded;
-
-  //       notAdded = thisAlbum.artists.every(function(artist, index, array) {
-  //         return (artist !== whichArtist)
-  //       });
-
-  //       if (notAdded) {
-  //         thisAlbum.artists.push(whichArtist);
-  //         RCApp.renderAlbums();
-  //         RCApp.renderArtists();
-  //       }
-  //     }
-  //   });
-  //   return albumNode;
-  // },
   renderArtists: function() {
     var artistNode = document.createElement("ul"),
         artistSel  = document.createElement("li"); // takes the artistSel form
