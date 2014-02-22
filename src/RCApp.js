@@ -20,6 +20,25 @@ var RCApp = {
     userDesc.value   = "";
     this.renderArtists();
   },
+  toggleArtistShow: function(event) {
+    var artistDesc;
+    if (event.target.className === "artist-header") {
+      var artistDesc = event.target.nextSibling;
+      // parentNode.getElementsByClassName("desc");
+      if (artistDesc.classList.contains("hidden")) {
+        artistDesc.classList.remove("hidden");
+      } else {
+        artistDesc.classList.add("hidden");
+      };
+    }
+    // var clickedArtistNode = event.currentTarget.
+    // var artistClickedId = parseInt(this.id.slice(7)), //convert artist_0 to 0
+    //     artistNode      = document.getElementById("artistClickedId"),
+    //     artistDesc;
+    // if event.target.nodeName;
+
+    // artistDesc = artistNode;
+  },
   renderArtists: function() {
     var artistsList = document.getElementById("artists-list");
     artistsList.innerHTML = "";
@@ -30,6 +49,14 @@ var RCApp = {
       artistNode.insertAdjacentHTML("afterend", "</li>");
       artistsList.appendChild(artist.renderSelf());
     });
+  },
+  buttons: {
+    delete: (function(glyphicon, classes) {
+      var button = document.createElement("button");
+      button.className = classes;
+      button.innerHTML = "<span class='glyphicon " + glyphicon + "'></span>";
+      return button;
+    })("glyphicon-ok", "delete btn btn-danger")
   },
   artists: [],
   albums:  []

@@ -12,13 +12,15 @@ RCApp.artist = function(name, desc) {
 RCApp.artist.prototype = {
   renderSelf: function() {
     var artistNode = document.createElement("div"),
-        detailNode = document.createElement("div"),
+        detailNode = this.htmlElements.detail.bind(this)(),
         myAlbums;
 
-    artistNode.setAttribute("data-artistid", this.uid)
+    artistNode.setAttribute("id", "artist_" + this.uid);
+    // artistNode.innerHTML = "<h3 class='artist-header'>" + this.name + "</h3>";
+    artistNode.appendChild(this.htmlElements.header.bind(this)());
 
-    artistNode.innerHTML = "<h3>" + this.name + "</h3>"
-    detailNode.innerHTML = "<h4>" + this.desc + "</h4>"
+    // detailNode.innerHTML = "<h4>" + this.desc + "</h4>";
+    // detailNode.className = "desc";
 
     // renderAlbums() if there are any and tack onto the detailNode
     if (this.albums.length > 0) {
@@ -39,5 +41,20 @@ RCApp.artist.prototype = {
     });
 
     return albumNode;
+  },
+  htmlElements: {
+    header: function() {
+      var h3 = document.createElement("h3");
+      h3.className = "artist-header"
+      h3.appendChild(RCApp.buttons.delete);
+      h3.innerHTML += this.name
+      return h3;
+    },
+    detail: function() {
+      var detailNode = document.createElement("div")
+      detailNode.className = "desc";
+      detailNode.innerHTML = "<h4>" + this.desc + "</h4>";
+      return detailNode;
+    }
   }
 }
