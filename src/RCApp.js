@@ -185,3 +185,43 @@ RCApp.findById = function(itemType, itemId) {
   });
   return foundItem;
 };
+
+RCApp.renderCollection = function(itemType, itemId) {
+  var item = RCApp.findById(itemType, itemId);
+
+  var itemNode  = document.createElement("ul"),
+      selectli  = document.createElement("li"), // houses the dropdown to attach artist/album
+      selectForm;
+
+  itemNode.classList.add("inner-list");
+
+  item.collection.forEach(function (obj, index, array) {
+    var collectionli = document.createElement("li");
+    collectionli.innerHTML = obj.title || obj.name;
+    itemNode.appendChild(collectionli);
+  });
+
+  // Get the right dropdown (assign artists to albums, vice versa)
+  selectForm = (itemType === "albums") ? RCApp.htmlEls.artistSel() :
+                                        RCApp.htmlEls.albumSel();
+  selectli.appendChild(selectForm);
+  selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
+
+  itemNode.appendChild(selectli);
+  return itemNode;
+}
+
+RCApp.htmlEls.selDropdown = function(showType) { // "artists" or "albums"
+  var dropdown      = document.createElement("select"),
+      optionList    = RCApp[showType],
+      numOptions    = optionList.length;
+
+  for(var i = 0; i < numOptions; i++) {
+    newOption = document.createElement("option");
+    newOption.innerHTML = optionList[i].name || optionList[i].title;
+    newOption.value     = optionList[i].uid;
+    dropdown.appendChild(newOption);
+  }
+  dropdown.className = "dropdown form-control";
+  return dropdown;
+};
