@@ -14,14 +14,13 @@ var RCApp = {
     event.preventDefault();
 
     newArtist = new RCApp.artist(userArtist.value, userDesc.value);
-    this.artists.push(newArtist);
+    RCApp.artists.push(newArtist);
 
     userArtist.value = "";
     userDesc.value   = "";
-    this.renderArtists();
+    RCApp.renderArtists();
   },
   toggleArtistShow: function(event) {
-    var artistDesc;
     if (event.target.className === "artist-header") {
       var artistDesc = event.target.nextSibling;
       // parentNode.getElementsByClassName("desc");
@@ -31,19 +30,25 @@ var RCApp = {
         artistDesc.classList.add("hidden");
       };
     }
-    // var clickedArtistNode = event.currentTarget.
-    // var artistClickedId = parseInt(this.id.slice(7)), //convert artist_0 to 0
-    //     artistNode      = document.getElementById("artistClickedId"),
-    //     artistDesc;
-    // if event.target.nodeName;
-
-    // artistDesc = artistNode;
+  },
+  deleteArtists: function(event) {
+    if (event.target.classList.contains("delete")) {
+      var artistNode = event.target.parentNode.parentNode; // button > h3 > div with artist_uid
+          artistuid  = artistNode.id
+      RCApp.artists.some(function(artist, index, array) {
+        if ("artist_" + artist.uid === artistuid) { // compare with div id to find artist to remove
+          RCApp.artists.splice(index, 1);
+          return true;
+        }
+      })
+      RCApp.renderArtists();
+    }
   },
   renderArtists: function() {
     var artistsList = document.getElementById("artists-list");
     artistsList.innerHTML = "";
 
-    this.artists.forEach(function(artist, index, array) {
+    RCApp.artists.forEach(function(artist, index, array) {
       var artistNode = artist.renderSelf();
       artistNode.insertAdjacentHTML("beforebegin", "<li>");
       artistNode.insertAdjacentHTML("afterend", "</li>");
@@ -51,12 +56,11 @@ var RCApp = {
     });
   },
   buttons: {
-    delete: (function(glyphicon, classes) {
+    delete: (function(classes) {
       var button = document.createElement("button");
       button.className = classes;
-      button.innerHTML = "<span class='glyphicon " + glyphicon + "'></span>";
       return button;
-    })("glyphicon-ok", "delete btn btn-danger")
+    })("delete btn btn-danger glyphicon glyphicon-ok")
   },
   artists: [],
   albums:  []

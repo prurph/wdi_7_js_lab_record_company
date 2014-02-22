@@ -44,9 +44,12 @@ RCApp.artist.prototype = {
   },
   htmlElements: {
     header: function() {
-      var h3 = document.createElement("h3");
+      var h3 = document.createElement("h3"),
+          button = RCApp.buttons.delete;
+
+      button.setAttribute("id", "delartist_" + this.uid);
       h3.className = "artist-header"
-      h3.appendChild(RCApp.buttons.delete);
+      h3.appendChild(button);
       h3.innerHTML += this.name
       return h3;
     },
