@@ -3,47 +3,83 @@ RCApp.album = function(title, year, artistuid) {
   if (title.length === 0) {
     throw new Error("Album must have title");
   }
-  this.title      = title;
-  this.year       = year;
-  this.uid        = RCApp.uid("album");
+  this.title       = title;
+  this.year        = year;
+  this.uid         = RCApp.uid("album");
   //this.artists    = [artist]; // String list of artists
-  this.collection = [];
+  this.collection  = [];
+  this.collectType = "artists";
 };
 
 RCApp.album.prototype = {
   renderSelf: function() {
     var albumNode  = document.createElement("div"),
-        detailNode = this.htmlElements.detail.bind(this)(),
-        thisAlbum  = this,
-        myArtists;
+        headerNode = this.htmlElements.header.bind(this)(), // h3 with title
+        detailNode = this.htmlElements.detail.bind(this)(), // h4 with description
+        thisAlbum = this;
 
     albumNode.setAttribute("id", "album_" + this.uid);
-    albumNode.appendChild(this.htmlElements.header.bind(this)());
+    albumNode.classList.add("album-card");
+    albumNode.appendChild(headerNode);
 
-    // renderArtists() and tack onto detailNode
-    myArtists = this.renderArtists();
-    detailNode.appendChild(myArtists);
-
+    detailNode.appendChild(RCApp.renderCollection("albums", this.uid));
     albumNode.appendChild(detailNode);
-    albumNode.addEventListener("click", function(event) {
-      if (event.target.classList.contains("plus")) {
-        var whichArtist  = event.target.previousElementSibling.value,
-            whichAlbum = event.currentTarget.id,
-            notAdded;
 
-        notAdded = thisAlbum.artists.every(function(artist, index, array) {
-          return (artist !== whichArtist)
+    albumNode.addEventListener("click", function(event) {
+      // if clicked on plus user is trying to add an album
+      if (event.target.classList.contains("plus")) {
+        var clickedArtistId = parseInt(event.target.previousElementSibling.value), // uid of artist dropdown
+            // whichArtistId   = event.currentTarget.id, // uid of the artist to add to
+            notInCollection;
+
+        // every returns true if there is not a matching album in collection already
+        notInCollection = thisAlbum.collection.every(function(artistuid, index, array) {
+          return (artistuid !== clickedArtistId);
         });
 
-        if (notAdded) {
-          thisAlbum.artists.push(whichArtist);
-          RCApp.renderAlbums();
-          RCApp.renderArtists();
+        if (notInCollection) {
+          RCApp.updateCollection("albums", thisAlbum.uid, "artists", clickedArtistId);
+          RCApp.updateCollection("artists", clickedArtistId, "albums", thisAlbum.uid)
+          RCApp.renderLists("albums");
+          RCApp.renderLists("artists");
         }
       }
-    });
+    }, false);
     return albumNode;
   },
+  // renderSelf: function() {
+  //   var albumNode  = document.createElement("div"),
+  //       detailNode = this.htmlElements.detail.bind(this)(),
+  //       thisAlbum  = this,
+  //       myArtists;
+
+  //   albumNode.setAttribute("id", "album_" + this.uid);
+  //   albumNode.appendChild(this.htmlElements.header.bind(this)());
+
+  //   // renderArtists() and tack onto detailNode
+  //   myArtists = this.renderArtists();
+  //   detailNode.appendChild(myArtists);
+
+  //   albumNode.appendChild(detailNode);
+  //   albumNode.addEventListener("click", function(event) {
+  //     if (event.target.classList.contains("plus")) {
+  //       var whichArtist  = event.target.previousElementSibling.value,
+  //           whichAlbum = event.currentTarget.id,
+  //           notAdded;
+
+  //       notAdded = thisAlbum.artists.every(function(artist, index, array) {
+  //         return (artist !== whichArtist)
+  //       });
+
+  //       if (notAdded) {
+  //         thisAlbum.artists.push(whichArtist);
+  //         RCApp.renderAlbums();
+  //         RCApp.renderArtists();
+  //       }
+  //     }
+  //   });
+  //   return albumNode;
+  // },
   renderArtists: function() {
     var artistNode = document.createElement("ul"),
         artistSel  = document.createElement("li"); // takes the artistSel form

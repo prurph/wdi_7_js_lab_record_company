@@ -163,7 +163,7 @@ RCApp.updateCollection = function(parentType, parentId, addType, addId) {
   parentItem  = RCApp.findById(parentType, parentId);
   addItem     = RCApp.findById(addType, addId);
 
-  parentItem.collection.push(addItem);
+  parentItem.collection.push(addItem.uid);
 };
 
 RCApp.findById = function(itemType, itemId) {
@@ -184,19 +184,24 @@ RCApp.renderCollection = function(itemType, itemId) {
   var item = RCApp.findById(itemType, itemId),
       itemNode  = document.createElement("ul"),
       selectli  = document.createElement("li"), // houses the dropdown to attach artist/album
-      selectForm;
+      selectForm,
+      collectionType;
 
+  collectionType = item.collectType;
   itemNode.classList.add("inner-list");
 
-  item.collection.forEach(function (obj, index, array) {
-    var collectionli = document.createElement("li");
-    collectionli.innerHTML = obj.title || obj.name;
+  item.collection.forEach(function (objuid, index, array) {
+    var collectionli = document.createElement("li"),
+        obj = RCApp.findById(collectionType, objuid);
+
+        collectionli.innerHTML = obj.title || obj.name;
+
     itemNode.appendChild(collectionli);
   });
 
   // Get the right dropdown (assign artists to albums, vice versa)
-  selectForm = (itemType === "artists") ? RCApp.htmlEls.selDropdown("albums") :
-                                          RCApp.htmlEls.selDropdown("artists");
+  selectForm = RCApp.htmlEls.selDropdown(collectionType);
+
   selectli.appendChild(selectForm);
   selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
 
