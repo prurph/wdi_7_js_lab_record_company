@@ -19,6 +19,24 @@ var RCApp = {
     userArtist.value = "";
     userDesc.value   = "";
     RCApp.renderArtists();
+    RCApp.renderAlbums();
+  },
+  createAlbum: function(event) {
+    var userAlbum     = document.getElementById("newalbum-name"),
+        albumsArtist  = document.getElementById("newalbum-artist"),
+        userYear      = document.getElementById("newalbum-year"),
+        newAlbum;
+
+    event.preventDefault();
+
+    newAlbum = new RCApp.album(userAlbum.value, albumsArtist.value, userYear.value);
+    RCApp.albums.push(newAlbum);
+
+    userAlbum.value    = "";
+    albumsArtist.value = "";
+    userYear.value     = "";
+    RCApp.renderAlbums();
+    RCApp.renderArtists();
   },
   toggleArtistShow: function(event) {
     if (event.target.className === "artist-header") {
@@ -33,8 +51,8 @@ var RCApp = {
   },
   deleteArtists: function(event) {
     if (event.target.classList.contains("delete")) {
-      var artistNode = event.target.parentNode.parentNode; // button > h3 > div with artist_uid
-          artistuid  = artistNode.id
+      var artistNode = event.target.parentNode.parentNode, // button > h3 > div with artist_uid
+          artistuid  = artistNode.id;
       RCApp.artists.some(function(artist, index, array) {
         if ("artist_" + artist.uid === artistuid) { // compare with div id to find artist to remove
           RCApp.artists.splice(index, 1);
@@ -42,6 +60,21 @@ var RCApp = {
         }
       })
       RCApp.renderArtists();
+      RCApp.renderAlbums(); // Refactor these into one
+    }
+  },
+  deleteAlbums: function(event) {
+    if (event.target.classList.contains("delete")) {
+      var albumNode = event.target.parentNode.parentNode, // button > h3 > div
+          albumuid = albumNode.id;
+      RCApp.albums.some(function(album, index, array) {
+        if ("album_" + album.uid === albumuid) {
+          RCApp.albums.splice(index, 1);
+          return true;
+        }
+      });
+      RCApp.renderArtists();
+      RCApp.renderAlbums();
     }
   },
   renderArtists: function() {
@@ -53,6 +86,25 @@ var RCApp = {
       artistNode.insertAdjacentHTML("beforebegin", "<li>");
       artistNode.insertAdjacentHTML("afterend", "</li>");
       artistsList.appendChild(artist.renderSelf());
+    });
+  },
+  renderAlbums: function() {
+    var albumsList  = document.getElementById("albums-list"),
+        albumsDiv   = document.getElementById("albums"),
+        newAlbumSel = document.getElementById("newalbum-artist"),
+        newField    = RCApp.htmlEls.artistSel();
+
+    // Each time stuff updates, be sure to update the dropdown for new album form
+    newField.setAttribute("id", "newalbum-artist");
+    albumsDiv.replaceChild(newField, newAlbumSel);
+
+    albumsList.innerHTML = "";
+
+    RCApp.albums.forEach(function(album, index, array) {
+      var albumNode = album.renderSelf();
+      albumNode.insertAdjacentHTML("beforebegin", "<li>");
+      albumNode.insertAdjacentHTML("afterend", "</li>");
+      albumsList.appendChild(album.renderSelf());
     });
   },
   htmlEls: {
@@ -72,6 +124,19 @@ var RCApp = {
         dropdown.appendChild(optn);
       }
       dropdown.className = "album-dropdown form-control";
+      return dropdown;
+    },
+    artistSel: function() {
+      var dropdown   = document.createElement("select"),
+          numArtists = RCApp.artists.length;
+
+      for(var i = 0; i < numArtists; i++) {
+        optn = document.createElement("option");
+        optn.innerHTML = RCApp.artists[i].name;
+        optn.value     = RCApp.artists[i].name; // keep as string for now
+        dropdown.appendChild(optn);
+      }
+      dropdown.className = "artist-dropdown form-control";
       return dropdown;
     },
     plusBtn: (function(classes) {

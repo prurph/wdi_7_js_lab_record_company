@@ -13,7 +13,7 @@ RCApp.artist.prototype = {
   renderSelf: function() {
     var artistNode = document.createElement("div"),
         detailNode = this.htmlElements.detail.bind(this)(),
-        thisArtist  = this,
+        thisArtist = this,
         myAlbums;
 
     artistNode.setAttribute("id", "artist_" + this.uid);
@@ -50,13 +50,13 @@ RCApp.artist.prototype = {
 
     this.albums.forEach(function (album, index, array) {
       var albumli = document.createElement("li");
-      albumli.innerHTML = album;
+      albumli.innerHTML = album; // these are just strings here
       albumNode.appendChild(albumli);
     });
 
-    // add an album <select> and a plust button to add albums
+    // add an album <select> and a plus button to add albums
     albumSel.appendChild(RCApp.htmlEls.albumSel());
-    albumSel.appendChild(RCApp.htmlEls.plusBtn);
+    albumSel.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
 
     albumNode.appendChild(albumSel);
 

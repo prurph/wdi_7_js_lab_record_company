@@ -4,6 +4,7 @@
   <title></title>
   <script src="./src/RCApp.js"></script>
   <script src="./src/artist.js"></script>
+  <script src="./src/album.js"></script>
   <script src="./src/onload.js"></script>
 
 </head>
@@ -12,11 +13,23 @@
   <input type="text" placeholder="newartist-name" id="newartist-name" class="form-control">
   <input type="text" placeholder="newartist-desc" id="newartist-desc" class="form-control">
 
-  <button type="button" id="newartist" class="btn btn-success">
-      newartist</button>
+  <button type="button" id="newartist" class="btn btn-success">newartist</button>
   <div class="artists-list">
     <ul id="artists-list">
     artists-list
+    </ul>
+  </div>
+</div>
+<div id="albums">
+  <input type="text" placeholder="newalbum-name" id="newalbum-name" class="form-control">
+  <input type="text" placeholder="newalbum-year" id="newalbum-year" class="form-control">
+  <!-- Below is dummy node that is immediately replaced with JS dropdown -->
+  <span id="newalbum-artist"></span>
+
+  <button type="button" id="newalbum" class="btn btn-success">newalbum</button>
+  <div class="albums-list">
+    <ul id="albums-list">
+    albums-list
     </ul>
   </div>
 </div>
