@@ -6,7 +6,6 @@ RCApp.album = function(title, year, artistuid) {
   this.title       = title;
   this.year        = year;
   this.uid         = RCApp.uid("album");
-  //this.artists    = [artist]; // String list of artists
   this.collection  = [];
   this.collectionType = "artists";
 };

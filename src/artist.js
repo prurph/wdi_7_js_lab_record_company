@@ -6,7 +6,6 @@ RCApp.artist = function(name, desc) {
   this.name        = name;
   this.desc        = desc || "No Description";
   this.uid         = RCApp.uid("artist");
-  this.albums      = []; // String list of albums
   this.collection  = []; // albumuids
   this.collectionType = "albums";
 };

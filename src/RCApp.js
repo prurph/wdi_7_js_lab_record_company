@@ -45,10 +45,10 @@ var RCApp = {
 
     if (event.target.classList.contains("artist-header") ||
        event.target.classList.contains("album-header")) {
-      if (targetedDesc.classList.contains("hidden")) {
-        targetedDesc.classList.remove("hidden");
+      if (targetedDesc.classList.contains("hideme")) {
+        targetedDesc.classList.remove("hideme");
       } else {
-        targetedDesc.classList.add("hidden");
+        targetedDesc.classList.add("hideme");
       }
     }
   },
@@ -246,7 +246,7 @@ RCApp.renderCollection = function(itemType, itemId) {
 
   // Get the right dropdown (assign artists to albums, vice versa)
   selectForm = RCApp.htmlEls.selDropdown(collectionType);
-  selectli.innerHTML = "Add " + (collectionType.slice(null,-1));
+  selectli.innerHTML = "Add association";
   selectli.appendChild(selectForm);
   selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
 

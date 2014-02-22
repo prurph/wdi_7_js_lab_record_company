@@ -16,33 +16,38 @@
   <div class="container">
     <h3 class="float-right our-artists">Our Artists</h3>
     <div id="artists">
-      <input type="text" placeholder="newartist-name" id="newartist-name" class="form-control">
-      <input type="text" placeholder="newartist-desc" id="newartist-desc" class="form-control">
+      <input type="text" placeholder="New Artist Name" id="newartist-name" class="form-control">
+      <input type="text" placeholder="New Artist Description" id="newartist-desc" class="form-control">
       <button type="button" id="newartist" class="btn btn-info">Add Artist</button>
 
       <div class="row">
         <div class="col-xs-12">
           <div class="artists-list">
-          <ul id="artists-list">
-          </ul>
-        </div>
+            <ul id="artists-list">
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-xs-12" id="albums">
-        <input type="text" placeholder="newalbum-name" id="newalbum-name" class="form-control">
-        <input type="text" placeholder="newalbum-year" id="newalbum-year" class="form-control">
-        <!-- Below is dummy node that is immediately replaced with JS dropdown -->
-        <span id="newalbum-artist"></span>
 
-        <button type="button" id="newalbum" class="btn btn-info">newalbum</button>
+    <h3 class="float-right their-albums">Their Albums</h3>
+    <div id="albums">
+      <input type="text" placeholder="New Album Name" id="newalbum-name" class="form-control">
+      <input type="text" placeholder="Release Year" id="newalbum-year" class="form-control">
+      <!-- Below is dummy node that is immediately replaced with JS dropdown -->
+      <span id="newalbum-artist"></span>
+
+      <button type="button" id="newalbum" class="btn btn-info">Add Album</button>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="albums-list">
+            <ul id="albums-list">
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="albums-list">
-      <ul id="albums-list">
-      </ul>
-    </div>
-
   </div>
 </body>
 </html>

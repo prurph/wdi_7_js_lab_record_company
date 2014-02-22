@@ -7,10 +7,6 @@ h4 {
   margin: 2px 0;
 }
 
-.hidden {
-  display: none;
-}
-
 .card {
   width: 100%;
 }
@@ -29,7 +25,7 @@ h4 {
   background-color: #34495E;
 }
 
-#artists {
+#artists, #albums {
   width: 50%;
   margin-top: 5px;
   display: inline-block;
@@ -39,21 +35,10 @@ h4 {
   margin-top: 2px;
 }
 
-#newartist {
+#newartist, #newalbum, #newalbum-artist {
   width: 100%;
   margin: 2px 0;
   text-align: left;
-}
-
-#newalbum-name, #newalbum-year, #newalbum-artist {
-  width: 30%;
-  display: inline-block;
-  margin: 1px;
-  float: none;
-}
-
-#newalbum-year {
-  width: 19%;
 }
 
 .delete, .plus {
@@ -64,25 +49,35 @@ h4 {
 
 .plus { /* move inside dropdown */
   position: relative;
-  left: 439px;
+  left: 395px;
   top: 3px;
+  background-color: #27AE60;
 }
 
 .float-right {
   float: right;
 }
-.our-artists {
+.our-artists, .their-albums {
   width: 50%;
   text-align: left;
   padding-left: 10px;
   height: 90px;
   line-height: 90px;
-  font-size: 60px;
+  font-size: 50px;
 }
 
 .desc {
   margin-top: 3px;
-  padding-left: 10px ;
+  padding-left: 10px;
+  max-height: 500px;
+  overflow: hidden;
+  -moz-transition: max-height .6s ease-in-out;
+  -webkit-transition: max-height .6s ease-in-out;
+  transition: max-height .6s ease-in-out;
+}
+
+.desc.hideme {
+  max-height: 0;
 }
 
 .dropdown {
@@ -95,12 +90,12 @@ h4 {
 
 @media (max-width: 1199px) {
   .plus {
-    left: 339px;
+    left: 290px;
   }
 }
 
 @media (max-width: 991px) {
   .plus {
-    left: 229px;
+    left: 180px;
   }
 }
