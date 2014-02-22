@@ -128,37 +128,27 @@ var RCApp = {
       button.className = classes;
       return button;
     })("delete btn btn-danger glyphicon glyphicon-remove"),
-    albumSel: function() {
-      var dropdown  = document.createElement("select"),
-          numAlbums = RCApp.albums.length;
 
-      for(var i = 0; i < numAlbums; i++) {
-        optn = document.createElement("option");
-        optn.innerHTML = RCApp.albums[i].title;
-        optn.value     = RCApp.albums[i].uid;
-        dropdown.appendChild(optn);
-      }
-      dropdown.className = "album-dropdown form-control";
-      return dropdown;
-    },
-    artistSel: function() {
-      var dropdown   = document.createElement("select"),
-          numArtists = RCApp.artists.length;
-
-      for(var i = 0; i < numArtists; i++) {
-        var optn = document.createElement("option");
-        optn.innerHTML = RCApp.artists[i].name;
-        optn.value     = RCApp.artists[i].uid;
-        dropdown.appendChild(optn);
-      }
-      dropdown.className = "artist-dropdown form-control";
-      return dropdown;
-    },
     plusBtn: (function(classes) {
       var button = document.createElement("button");
       button.className = classes;
       return button;
     })("plus btn btn-danger glyphicon glyphicon-plus"),
+
+    selDropdown: function(showType) { // "artists" or "albums"
+      var dropdown      = document.createElement("select"),
+          optionList    = RCApp[showType],
+          numOptions    = optionList.length;
+
+      for(var i = 0; i < numOptions; i++) {
+        newOption = document.createElement("option");
+        newOption.innerHTML = optionList[i].name || optionList[i].title;
+        newOption.value     = optionList[i].uid;
+        dropdown.appendChild(newOption);
+      }
+      dropdown.className = "dropdown form-control";
+      return dropdown;
+    }
   },
   artists: [],
   albums:  []
@@ -186,6 +176,7 @@ RCApp.findById = function(itemType, itemId) {
   return foundItem;
 };
 
+// Renders the sublist of albums under an artist or vice versa
 RCApp.renderCollection = function(itemType, itemId) {
   var item = RCApp.findById(itemType, itemId);
 
@@ -202,26 +193,55 @@ RCApp.renderCollection = function(itemType, itemId) {
   });
 
   // Get the right dropdown (assign artists to albums, vice versa)
-  selectForm = (itemType === "albums") ? RCApp.htmlEls.artistSel() :
-                                        RCApp.htmlEls.albumSel();
+  selectForm = RCApp.htmlEls.selDropdown(itemType);
+
   selectli.appendChild(selectForm);
   selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
 
   itemNode.appendChild(selectli);
   return itemNode;
+};
+
+// RCApp.htmlEls.selDropdown = function(showType) { // "artists" or "albums"
+//   var dropdown      = document.createElement("select"),
+//       optionList    = RCApp[showType],
+//       numOptions    = optionList.length;
+
+//   for(var i = 0; i < numOptions; i++) {
+//     newOption = document.createElement("option");
+//     newOption.innerHTML = optionList[i].name || optionList[i].title;
+//     newOption.value     = optionList[i].uid;
+//     dropdown.appendChild(newOption);
+//   }
+//   dropdown.className = "dropdown form-control";
+//   return dropdown;
+// };
+
+// Render the macro level lists
+RCApp.renderLists = function(listType) { // "artists" or "albums"
+  var listNode = document.getElementById(listType + "-list"),
+      itemList = RCApp[listType],
+      // these are used to update the artist dropdown beneath the create album form
+      albumsDiv,
+      existingDropdown,
+      updatedDropdown;
+
+  if (listType === "albums") { // if we're rendering albums, update the artist dropdown
+    albumsDiv         = document.getElementById("albums"),
+    existingDropdown  = document.getElementById("newalbum-artist"),
+    updatedDropdown   = RCApp.htmlEls.selDropdown("artists");
+
+    updatedDropdown.setAttribute("id", "newalbum-artist");
+    albumsDiv.replaceChild(updatedDropdown, existingDropdown);
+  }
+
+  listNode.innerHTML = "";
+
+  itemList.forEach(function(obj, index, array) {
+    var itemNode = obj.renderSelf();
+    itemNode.insertAdjacentHTML("beforebegin", "<li>");
+    itemNode.insertAdjacentHTML("afterend", "</li>");
+    itemList.appendChild(itemNode);
+  });
 }
 
-RCApp.htmlEls.selDropdown = function(showType) { // "artists" or "albums"
-  var dropdown      = document.createElement("select"),
-      optionList    = RCApp[showType],
-      numOptions    = optionList.length;
-
-  for(var i = 0; i < numOptions; i++) {
-    newOption = document.createElement("option");
-    newOption.innerHTML = optionList[i].name || optionList[i].title;
-    newOption.value     = optionList[i].uid;
-    dropdown.appendChild(newOption);
-  }
-  dropdown.className = "dropdown form-control";
-  return dropdown;
-};
