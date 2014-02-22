@@ -122,7 +122,7 @@ var RCApp = {
       var button = document.createElement("button");
       button.className = classes;
       return button;
-    })("delete btn btn-danger glyphicon glyphicon-ok"),
+    })("delete btn btn-danger glyphicon glyphicon-remove"),
     albumSel: function() {
       var dropdown  = document.createElement("select"),
           numAlbums = RCApp.albums.length;
