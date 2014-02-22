@@ -10,7 +10,7 @@ window.onload = function() {
   artistList.addEventListener("click", RCApp.deleteArtists, false);
 
   newalbumButton.addEventListener("click", RCApp.createAlbum, false);
- // albumList.addEventListener("click", RCApp.toggleAlbumShow.bind(albumList), false);
+  albumList.addEventListener("click", RCApp.toggleAlbumShow.bind(albumList), false);
   albumList.addEventListener("click", RCApp.deleteAlbums, false);
 
   RCApp.renderAlbums();

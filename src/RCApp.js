@@ -49,6 +49,16 @@ var RCApp = {
       };
     }
   },
+  toggleAlbumShow: function(event) {
+    if (event.target.className === "album-header") {
+      var albumDesc = event.target.nextSibling;
+      if (albumDesc.classList.contains("hidden")) {
+        albumDesc.classList.remove("hidden");
+      } else {
+        albumDesc.classList.add("hidden");
+      }
+    }
+  },
   deleteArtists: function(event) {
     if (event.target.classList.contains("delete")) {
       var artistNode = event.target.parentNode.parentNode, // button > h3 > div with artist_uid
@@ -131,7 +141,7 @@ var RCApp = {
           numArtists = RCApp.artists.length;
 
       for(var i = 0; i < numArtists; i++) {
-        optn = document.createElement("option");
+        var optn = document.createElement("option");
         optn.innerHTML = RCApp.artists[i].name;
         optn.value     = RCApp.artists[i].name; // keep as string for now
         dropdown.appendChild(optn);

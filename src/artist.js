@@ -37,6 +37,8 @@ RCApp.artist.prototype = {
 
         if (notAdded) {
           thisArtist.albums.push(whichAlbum);
+          RCApp.renderAlbums();
+          RCApp.renderArtists();
         }
       }
     }, false);

@@ -4,10 +4,9 @@ RCApp.album = function(title, artist, year) {
     throw new Error("Album must have title and artist");
   }
   this.title   = title;
-  this.artist  = artist;
   this.year    = year;
   this.uid     = RCApp.uid("album");
-  this.artists = []; // String list of artists
+  this.artists = [artist]; // String list of artists
 };
 
 RCApp.album.prototype = {
@@ -25,8 +24,23 @@ RCApp.album.prototype = {
     detailNode.appendChild(myArtists);
 
     albumNode.appendChild(detailNode);
+    albumNode.addEventListener("click", function(event) {
+      if (event.target.classList.contains("plus")) {
+        var whichArtist  = event.target.previousElementSibling.value,
+            whichAlbum = event.currentTarget.id,
+            notAdded;
 
-    // albumNode.addEventListenere = STLKSJDFLKJSSTUF
+        notAdded = thisAlbum.artists.every(function(artist, index, array) {
+          return (artist !== whichArtist)
+        });
+
+        if (notAdded) {
+          thisAlbum.artists.push(whichArtist);
+          RCApp.renderAlbums();
+          RCApp.renderArtists();
+        }
+      }
+    });
     return albumNode;
   },
   renderArtists: function() {
