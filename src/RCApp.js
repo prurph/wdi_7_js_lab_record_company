@@ -23,18 +23,23 @@ var RCApp = {
   },
   createAlbum: function(event) {
     var userAlbum     = document.getElementById("newalbum-name"),
-        albumsArtist  = document.getElementById("newalbum-artist"),
         userYear      = document.getElementById("newalbum-year"),
+        artistuid     = document.getElementById("newalbum-artist"),
         newAlbum;
 
-    event.preventDefault();
-
-    newAlbum = new RCApp.album(userAlbum.value, albumsArtist.value, userYear.value);
+    newAlbum = new RCApp.album(userAlbum.value, userYear.value,
+                               parseInt(artistuid.value));
     RCApp.albums.push(newAlbum);
 
+    // Link the artist and album
+    RCApp.updateCollection("albums", newAlbum.uid, "artists",
+                           parseInt(artistuid.value));
+    RCApp.updateCollection("artists", parseInt(artistuid.value), "albums",
+                           newAlbum.uid);
+
     userAlbum.value    = "";
-    albumsArtist.value = "";
     userYear.value     = "";
+    artistuid.value = "";
     RCApp.renderAlbums();
     RCApp.renderArtists();
   },
@@ -130,7 +135,7 @@ var RCApp = {
       for(var i = 0; i < numAlbums; i++) {
         optn = document.createElement("option");
         optn.innerHTML = RCApp.albums[i].title;
-        optn.value     = RCApp.albums[i].title; // keep as string for now (artist albums array is strings)
+        optn.value     = RCApp.albums[i].uid;
         dropdown.appendChild(optn);
       }
       dropdown.className = "album-dropdown form-control";
@@ -143,7 +148,7 @@ var RCApp = {
       for(var i = 0; i < numArtists; i++) {
         var optn = document.createElement("option");
         optn.innerHTML = RCApp.artists[i].name;
-        optn.value     = RCApp.artists[i].name; // keep as string for now
+        optn.value     = RCApp.artists[i].uid;
         dropdown.appendChild(optn);
       }
       dropdown.className = "artist-dropdown form-control";
@@ -157,4 +162,26 @@ var RCApp = {
   },
   artists: [],
   albums:  []
+};
+
+RCApp.updateCollection = function(parentType, parentId, addType, addId) {
+  var parentItem,
+      addItem;
+
+  parentItem  = RCApp.findById(parentType, parentId);
+  addItem     = RCApp.findById(addType, addId);
+
+  parentItem.collection.push(addItem);
+};
+
+RCApp.findById = function(itemType, itemId) {
+  var collection = RCApp[itemType], // artists or albums
+      foundItem;
+  collection.some(function(obj, index, array) {
+    if (obj.uid === itemId) {
+      foundItem = obj;
+      return true;
+    }
+  });
+  return foundItem;
 };

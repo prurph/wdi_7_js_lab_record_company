@@ -1,12 +1,13 @@
 // RCApp is defined in RCApp.js
-RCApp.album = function(title, artist, year) {
-  if (title.length === 0 || artist.length === 0) {
-    throw new Error("Album must have title and artist");
+RCApp.album = function(title, year, artistuid) {
+  if (title.length === 0) {
+    throw new Error("Album must have title");
   }
-  this.title   = title;
-  this.year    = year;
-  this.uid     = RCApp.uid("album");
-  this.artists = [artist]; // String list of artists
+  this.title      = title;
+  this.year       = year;
+  this.uid        = RCApp.uid("album");
+  //this.artists    = [artist]; // String list of artists
+  this.collection = [];
 };
 
 RCApp.album.prototype = {

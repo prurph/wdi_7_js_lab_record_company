@@ -3,10 +3,11 @@ RCApp.artist = function(name, desc) {
   if (name.length === 0) {
     throw new Error("Artist must have name");
   }
-  this.name   = name;
-  this.desc   = desc || "No Description";
-  this.uid    = RCApp.uid("artist");
-  this.albums = []; // String list of albums
+  this.name       = name;
+  this.desc       = desc || "No Description";
+  this.uid        = RCApp.uid("artist");
+  this.albums     = []; // String list of albums
+  this.collection = []; // albumuids
 };
 
 RCApp.artist.prototype = {
