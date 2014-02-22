@@ -18,8 +18,8 @@ var RCApp = {
 
     userArtist.value = "";
     userDesc.value   = "";
-    RCApp.renderArtists();
-    RCApp.renderAlbums();
+    RCApp.renderLists("artists");
+    RCApp.renderLists("albums");
   },
   createAlbum: function(event) {
     var userAlbum     = document.getElementById("newalbum-name"),
@@ -40,8 +40,8 @@ var RCApp = {
     userAlbum.value    = "";
     userYear.value     = "";
     artistuid.value = "";
-    RCApp.renderAlbums();
-    RCApp.renderArtists();
+    RCApp.renderLists("artists");
+    RCApp.renderLists("albums");
   },
   toggleArtistShow: function(event) {
     if (event.target.className === "artist-header") {
@@ -154,6 +154,8 @@ var RCApp = {
   albums:  []
 };
 
+// If user adds an artist to an album (or vice versa), make sure that album gets
+// added to the artist as well
 RCApp.updateCollection = function(parentType, parentId, addType, addId) {
   var parentItem,
       addItem;
@@ -177,10 +179,10 @@ RCApp.findById = function(itemType, itemId) {
 };
 
 // Renders the sublist of albums under an artist or vice versa
+// itemType is that of the thing that owns the collection (not what it is collection of)
 RCApp.renderCollection = function(itemType, itemId) {
-  var item = RCApp.findById(itemType, itemId);
-
-  var itemNode  = document.createElement("ul"),
+  var item = RCApp.findById(itemType, itemId),
+      itemNode  = document.createElement("ul"),
       selectli  = document.createElement("li"), // houses the dropdown to attach artist/album
       selectForm;
 
@@ -193,29 +195,14 @@ RCApp.renderCollection = function(itemType, itemId) {
   });
 
   // Get the right dropdown (assign artists to albums, vice versa)
-  selectForm = RCApp.htmlEls.selDropdown(itemType);
-
+  selectForm = (itemType === "artists") ? RCApp.htmlEls.selDropdown("albums") :
+                                          RCApp.htmlEls.selDropdown("artists");
   selectli.appendChild(selectForm);
   selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
 
   itemNode.appendChild(selectli);
   return itemNode;
 };
-
-// RCApp.htmlEls.selDropdown = function(showType) { // "artists" or "albums"
-//   var dropdown      = document.createElement("select"),
-//       optionList    = RCApp[showType],
-//       numOptions    = optionList.length;
-
-//   for(var i = 0; i < numOptions; i++) {
-//     newOption = document.createElement("option");
-//     newOption.innerHTML = optionList[i].name || optionList[i].title;
-//     newOption.value     = optionList[i].uid;
-//     dropdown.appendChild(newOption);
-//   }
-//   dropdown.className = "dropdown form-control";
-//   return dropdown;
-// };
 
 // Render the macro level lists
 RCApp.renderLists = function(listType) { // "artists" or "albums"
@@ -241,7 +228,6 @@ RCApp.renderLists = function(listType) { // "artists" or "albums"
     var itemNode = obj.renderSelf();
     itemNode.insertAdjacentHTML("beforebegin", "<li>");
     itemNode.insertAdjacentHTML("afterend", "</li>");
-    itemList.appendChild(itemNode);
+    listNode.appendChild(itemNode);
   });
 }
-

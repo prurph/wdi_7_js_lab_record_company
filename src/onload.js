@@ -13,5 +13,5 @@ window.onload = function() {
   albumList.addEventListener("click", RCApp.toggleAlbumShow.bind(albumList), false);
   albumList.addEventListener("click", RCApp.deleteAlbums, false);
 
-  RCApp.renderAlbums();
+  RCApp.renderLists("albums");
 }

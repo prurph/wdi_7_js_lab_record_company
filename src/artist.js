@@ -13,39 +13,75 @@ RCApp.artist = function(name, desc) {
 RCApp.artist.prototype = {
   renderSelf: function() {
     var artistNode = document.createElement("div"),
-        detailNode = this.htmlElements.detail.bind(this)(),
-        thisArtist = this,
-        myAlbums;
+        headerNode = this.htmlElements.header.bind(this)(), // h3 with title
+        detailNode = this.htmlElements.detail.bind(this)(), // h4 with description
+        thisArtist = this;
 
     artistNode.setAttribute("id", "artist_" + this.uid);
-    artistNode.appendChild(this.htmlElements.header.bind(this)());
+    artistNode.classList.add("artist-card");
+    artistNode.appendChild(headerNode);
 
-    // renderAlbums() and tack onto detailNode
-    myAlbums = this.renderAlbums();
-    detailNode.appendChild(myAlbums);
-
+    detailNode.appendChild(RCApp.renderCollection("artists", this.uid));
     artistNode.appendChild(detailNode);
+
     artistNode.addEventListener("click", function(event) {
       // if clicked on plus user is trying to add an album
       if (event.target.classList.contains("plus")) {
-        var whichAlbum  = event.target.previousElementSibling.value, // string name of album
-            whichArtist = event.currentTarget.id,
-            notAdded;
+        var clickedAlbumId = event.target.previousElementSibling.value, // uid of album dropdown
+            // whichArtistId   = event.currentTarget.id, // uid of the artist to add to
+            notInCollection;
 
-        notAdded = thisArtist.albums.every(function(album, index, array) {
-          return (album !== whichAlbum);
+        // every returns true if there is not a matching album in collection already
+        notInCollection = thisArtist.collection.every(function(album, index, array) {
+          return (album.uid !== clickedAlbumId);
         });
 
-        if (notAdded) {
-          thisArtist.albums.push(whichAlbum);
-          RCApp.renderAlbums();
-          RCApp.renderArtists();
+        if (notInCollection) {
+          RCApp.updateCollection("artists", thisArtist.uid, "albums", clickedAlbumId);
+          RCApp.updateCollection("albums", clickedAlbumId, "artists", thisArtist.uid)
+          RCApp.renderLists("albums");
+          RCApp.renderLists("artists");
         }
       }
     }, false);
-
     return artistNode;
   },
+
+  // renderSelf: function() {
+  //   var artistNode = document.createElement("div"),
+  //       detailNode = this.htmlElements.detail.bind(this)(),
+  //       thisArtist = this,
+  //       myAlbums;
+
+  //   artistNode.setAttribute("id", "artist_" + this.uid);
+  //   artistNode.appendChild(this.htmlElements.header.bind(this)());
+
+  //   // renderAlbums() and tack onto detailNode
+  //   myAlbums = this.renderAlbums();
+  //   detailNode.appendChild(myAlbums);
+
+  //   artistNode.appendChild(detailNode);
+  //   artistNode.addEventListener("click", function(event) {
+  //     // if clicked on plus user is trying to add an album
+  //     if (event.target.classList.contains("plus")) {
+  //       var whichAlbum  = event.target.previousElementSibling.value, // string name of album
+  //           whichArtist = event.currentTarget.id,
+  //           notAdded;
+
+  //       notAdded = thisArtist.albums.every(function(album, index, array) {
+  //         return (album !== whichAlbum);
+  //       });
+
+  //       if (notAdded) {
+  //         thisArtist.albums.push(whichAlbum);
+  //         RCApp.renderAlbums();
+  //         RCApp.renderArtists();
+  //       }
+  //     }
+  //   }, false);
+
+  //   return artistNode;
+  // },
   renderAlbums: function() {
     var albumNode = document.createElement("ul"),
         albumSel  = document.createElement("li"); // takes the albumSel form
