@@ -81,11 +81,15 @@ h4 {
 }
 
 .dropdown {
-  width: 60%;
+  width: 70%;
 }
 
 .inner-list {
   padding-left: 2px;
+}
+
+.inner-list li:last-child {
+  color: #27AE60;
 }
 
 @media (max-width: 1199px) {

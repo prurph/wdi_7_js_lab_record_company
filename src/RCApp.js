@@ -27,6 +27,8 @@ var RCApp = {
         artistuid     = parseInt(document.getElementById("newalbum-artist").value),
         newAlbum;
 
+    event.preventDefault();
+
     newAlbum = new RCApp.album(userAlbum.value, userYear.value, artistuid);
     RCApp.albums.push(newAlbum);
 
@@ -36,7 +38,7 @@ var RCApp = {
 
     userAlbum.value    = "";
     userYear.value     = "";
-    artistuid.value = "";
+    artistuid.value    = "";
     RCApp.renderLists("artists");
     RCApp.renderLists("albums");
   },
@@ -72,36 +74,6 @@ var RCApp = {
       RCApp.renderLists("artists");
       RCApp.renderLists("albums");
     }
-  },
-  renderArtists: function() {
-    var artistsList = document.getElementById("artists-list");
-    artistsList.innerHTML = "";
-
-    RCApp.artists.forEach(function(artist, index, array) {
-      var artistNode = artist.renderSelf();
-      artistNode.insertAdjacentHTML("beforebegin", "<li>");
-      artistNode.insertAdjacentHTML("afterend", "</li>");
-      artistsList.appendChild(artist.renderSelf());
-    });
-  },
-  renderAlbums: function() {
-    var albumsList  = document.getElementById("albums-list"),
-        albumsDiv   = document.getElementById("albums"),
-        newAlbumSel = document.getElementById("newalbum-artist"),
-        newField    = RCApp.htmlEls.selDropdown("artists");
-
-    // Each time stuff updates, be sure to update the dropdown for new album form
-    newField.setAttribute("id", "newalbum-artist");
-    albumsDiv.replaceChild(newField, newAlbumSel);
-
-    albumsList.innerHTML = "";
-
-    RCApp.albums.forEach(function(album, index, array) {
-      var albumNode = album.renderSelf();
-      albumNode.insertAdjacentHTML("beforebegin", "<li>");
-      albumNode.insertAdjacentHTML("afterend", "</li>");
-      albumsList.appendChild(album.renderSelf());
-    });
   },
   htmlEls: {
     deleteBtn: (function(classes) {
