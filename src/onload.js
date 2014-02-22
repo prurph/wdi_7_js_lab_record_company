@@ -6,12 +6,12 @@ window.onload = function() {
   var albumList       = document.getElementById("albums-list");
 
   newartistButton.addEventListener("click", RCApp.createArtist, false);
-  artistList.addEventListener("click", RCApp.toggleArtistShow.bind(artistList), false);
-  artistList.addEventListener("click", RCApp.deleteArtists, false);
+  artistList.addEventListener("click", RCApp.toggleShow, false);
+  artistList.addEventListener("click", RCApp.deleteItem, false);
 
   newalbumButton.addEventListener("click", RCApp.createAlbum, false);
-  albumList.addEventListener("click", RCApp.toggleAlbumShow.bind(albumList), false);
-  albumList.addEventListener("click", RCApp.deleteAlbums, false);
+  albumList.addEventListener("click", RCApp.toggleShow, false);
+  albumList.addEventListener("click", RCApp.deleteItem, false);
 
   RCApp.renderLists("albums");
 }

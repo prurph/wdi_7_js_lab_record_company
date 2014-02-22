@@ -24,18 +24,15 @@ var RCApp = {
   createAlbum: function(event) {
     var userAlbum     = document.getElementById("newalbum-name"),
         userYear      = document.getElementById("newalbum-year"),
-        artistuid     = document.getElementById("newalbum-artist"),
+        artistuid     = parseInt(document.getElementById("newalbum-artist").value),
         newAlbum;
 
-    newAlbum = new RCApp.album(userAlbum.value, userYear.value,
-                               parseInt(artistuid.value));
+    newAlbum = new RCApp.album(userAlbum.value, userYear.value, artistuid);
     RCApp.albums.push(newAlbum);
 
     // Link the artist and album
-    RCApp.updateCollection("albums", newAlbum.uid, "artists",
-                           parseInt(artistuid.value));
-    RCApp.updateCollection("artists", parseInt(artistuid.value), "albums",
-                           newAlbum.uid);
+    RCApp.updateCollection("albums", newAlbum.uid, "artists", artistuid);
+    RCApp.updateCollection("artists", artistuid, "albums", newAlbum.uid);
 
     userAlbum.value    = "";
     userYear.value     = "";
@@ -43,55 +40,67 @@ var RCApp = {
     RCApp.renderLists("artists");
     RCApp.renderLists("albums");
   },
-  toggleArtistShow: function(event) {
-    if (event.target.className === "artist-header") {
-      var artistDesc = event.target.nextSibling;
-      // parentNode.getElementsByClassName("desc");
-      if (artistDesc.classList.contains("hidden")) {
-        artistDesc.classList.remove("hidden");
+  toggleShow: function(name) {
+    var targetedDesc = event.target.nextSibling;
+
+    if (event.target.classList.contains("artist-header") ||
+       event.target.classList.contains("album-header")) {
+      if (targetedDesc.classList.contains("hidden")) {
+        targetedDesc.classList.remove("hidden");
       } else {
-        artistDesc.classList.add("hidden");
-      };
-    }
-  },
-  toggleAlbumShow: function(event) {
-    if (event.target.className === "album-header") {
-      var albumDesc = event.target.nextSibling;
-      if (albumDesc.classList.contains("hidden")) {
-        albumDesc.classList.remove("hidden");
-      } else {
-        albumDesc.classList.add("hidden");
+        targetedDesc.classList.add("hidden");
       }
     }
   },
-  deleteArtists: function(event) {
+  deleteItem: function(event) {
     if (event.target.classList.contains("delete")) {
-      var artistNode = event.target.parentNode.parentNode, // button > h3 > div with artist_uid
-          artistuid  = artistNode.id;
-      RCApp.artists.some(function(artist, index, array) {
-        if ("artist_" + artist.uid === artistuid) { // compare with div id to find artist to remove
-          RCApp.artists.splice(index, 1);
-          return true;
-        }
-      })
-      RCApp.renderArtists();
-      RCApp.renderAlbums(); // Refactor these into one
-    }
-  },
-  deleteAlbums: function(event) {
-    if (event.target.classList.contains("delete")) {
-      var albumNode = event.target.parentNode.parentNode, // button > h3 > div
-          albumuid = albumNode.id;
-      RCApp.albums.some(function(album, index, array) {
-        if ("album_" + album.uid === albumuid) {
-          RCApp.albums.splice(index, 1);
+      var targetNode = event.target.parentNode.parentNode, // button > h3 > div with thing_uid
+          targetHTMLId   = targetNode.id, // artist_# or album_#
+          targetType,
+          targetuid;
+
+      targetHTMLId = targetHTMLId.split("_")
+      targetType = targetHTMLId[0] + "s"
+      targetuid  = parseInt(targetHTMLId[1])
+
+      RCApp[targetType].some(function(obj, index, array) {
+        if (obj.uid === targetuid) {
+          RCApp[targetType].splice(index, 1);
           return true;
         }
       });
-      RCApp.renderArtists();
-      RCApp.renderAlbums();
+      RCApp.renderLists("artists");
+      RCApp.renderLists("albums");
     }
   },
+  // deleteArtists: function(event) {
+  //   if (event.target.classList.contains("delete")) {
+  //     var artistNode = event.target.parentNode.parentNode, // button > h3 > div with artist_uid
+  //         artistuid  = artistNode.id;
+  //     RCApp.artists.some(function(artist, index, array) {
+  //       if ("artist_" + artist.uid === artistuid) { // compare with div id to find artist to remove
+  //         RCApp.artists.splice(index, 1);
+  //         return true;
+  //       }
+  //     })
+  //     RCApp.renderLists("artists");
+  //     RCApp.renderLists("albums");
+  //   }
+  // },
+  // deleteAlbums: function(event) {
+  //   if (event.target.classList.contains("delete")) {
+  //     var albumNode = event.target.parentNode.parentNode, // button > h3 > div
+  //         albumuid = albumNode.id;
+  //     RCApp.albums.some(function(album, index, array) {
+  //       if ("album_" + album.uid === albumuid) {
+  //         RCApp.albums.splice(index, 1);
+  //         return true;
+  //       }
+  //     });
+  //     RCApp.renderLists("artists");
+  //     RCApp.renderLists("albums");
+  //   }
+  // },
   renderArtists: function() {
     var artistsList = document.getElementById("artists-list");
     artistsList.innerHTML = "";
@@ -107,7 +116,7 @@ var RCApp = {
     var albumsList  = document.getElementById("albums-list"),
         albumsDiv   = document.getElementById("albums"),
         newAlbumSel = document.getElementById("newalbum-artist"),
-        newField    = RCApp.htmlEls.artistSel();
+        newField    = RCApp.htmlEls.selDropdown("artists");
 
     // Each time stuff updates, be sure to update the dropdown for new album form
     newField.setAttribute("id", "newalbum-artist");
@@ -194,9 +203,13 @@ RCApp.renderCollection = function(itemType, itemId) {
     var collectionli = document.createElement("li"),
         obj = RCApp.findById(collectionType, objuid);
 
-        collectionli.innerHTML = obj.title || obj.name;
-
-    itemNode.appendChild(collectionli);
+    if (typeof obj === "undefined") {
+      // if object isn't found it was probably deleted, so remove from the collection
+      array.splice(index, 1)
+    } else {
+      collectionli.innerHTML = obj.title || obj.name;
+      itemNode.appendChild(collectionli);
+    }
   });
 
   // Get the right dropdown (assign artists to albums, vice versa)

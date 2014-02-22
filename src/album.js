@@ -18,24 +18,6 @@ RCApp.album.prototype = {
         thisAlbum  = this;
     return RCApp.renderCard("albums", headerNode, detailNode, thisAlbum);
   },
-  renderArtists: function() {
-    var artistNode = document.createElement("ul"),
-        artistSel  = document.createElement("li"); // takes the artistSel form
-
-    this.artists.forEach(function (artist, index, array) {
-        var artistli = document.createElement("li");
-        artistli.innerHTML = artist; // remember these are just strings
-        artistNode.appendChild(artistli);
-    });
-
-    // add an artist <select> and a plus button to add artists
-    artistSel.appendChild(RCApp.htmlEls.artistSel());
-    artistSel.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
-
-    artistNode.appendChild(artistSel);
-
-    return artistNode;
-  },
   htmlElements: {
     header: function() {
       var h3 = document.createElement("h3"),
