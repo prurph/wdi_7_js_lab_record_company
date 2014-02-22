@@ -49,6 +49,7 @@ h4 {
   width: 30%;
   display: inline-block;
   margin: 1px;
+  float: none;
 }
 
 #newalbum-year {
@@ -59,6 +60,12 @@ h4 {
   width: 32px;
   height: 32px;
   margin-top: 4px;
+}
+
+.plus { /* move inside dropdown */
+  position: relative;
+  left: 439px;
+  top: 3px;
 }
 
 .float-right {
@@ -74,5 +81,26 @@ h4 {
 }
 
 .desc {
+  margin-top: 3px;
   padding-left: 10px ;
+}
+
+.dropdown {
+  width: 60%;
+}
+
+.inner-list {
+  padding-left: 2px;
+}
+
+@media (max-width: 1199px) {
+  .plus {
+    left: 339px;
+  }
+}
+
+@media (max-width: 991px) {
+  .plus {
+    left: 229px;
+  }
 }

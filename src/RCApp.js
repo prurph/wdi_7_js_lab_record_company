@@ -127,7 +127,7 @@ var RCApp = {
         newOption.value     = optionList[i].uid;
         dropdown.appendChild(newOption);
       }
-      dropdown.className = "dropdown form-control";
+      dropdown.className = "dropdown float-right form-control";
       return dropdown;
     }
   },
@@ -239,14 +239,14 @@ RCApp.renderCollection = function(itemType, itemId) {
       // if object isn't found it was probably deleted, so remove from the collection
       array.splice(index, 1)
     } else {
-      collectionli.innerHTML = obj.title || obj.name;
+      collectionli.innerHTML = obj.name || obj.title + " (" + obj.year + ")"
       itemNode.appendChild(collectionli);
     }
   });
 
   // Get the right dropdown (assign artists to albums, vice versa)
   selectForm = RCApp.htmlEls.selDropdown(collectionType);
-
+  selectli.innerHTML = "Add " + (collectionType.slice(null,-1));
   selectli.appendChild(selectForm);
   selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
 
