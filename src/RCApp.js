@@ -55,12 +55,30 @@ var RCApp = {
       artistsList.appendChild(artist.renderSelf());
     });
   },
-  buttons: {
-    delete: (function(classes) {
+  htmlEls: {
+    deleteBtn: (function(classes) {
       var button = document.createElement("button");
       button.className = classes;
       return button;
-    })("delete btn btn-danger glyphicon glyphicon-ok")
+    })("delete btn btn-danger glyphicon glyphicon-ok"),
+    albumSel: function() {
+      var dropdown  = document.createElement("select"),
+          numAlbums = RCApp.albums.length;
+
+      for(var i = 0; i < numAlbums; i++) {
+        optn = document.createElement("option");
+        optn.innerHTML = RCApp.albums[i].title;
+        optn.value     = RCApp.albums[i].title; // keep as string for now (artist albums array is strings)
+        dropdown.appendChild(optn);
+      }
+      dropdown.className = "album-dropdown form-control";
+      return dropdown;
+    },
+    plusBtn: (function(classes) {
+      var button = document.createElement("button");
+      button.className = classes;
+      return button;
+    })("plus btn btn-danger glyphicon glyphicon-plus"),
   },
   artists: [],
   albums:  []
