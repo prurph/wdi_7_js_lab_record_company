@@ -73,34 +73,6 @@ var RCApp = {
       RCApp.renderLists("albums");
     }
   },
-  // deleteArtists: function(event) {
-  //   if (event.target.classList.contains("delete")) {
-  //     var artistNode = event.target.parentNode.parentNode, // button > h3 > div with artist_uid
-  //         artistuid  = artistNode.id;
-  //     RCApp.artists.some(function(artist, index, array) {
-  //       if ("artist_" + artist.uid === artistuid) { // compare with div id to find artist to remove
-  //         RCApp.artists.splice(index, 1);
-  //         return true;
-  //       }
-  //     })
-  //     RCApp.renderLists("artists");
-  //     RCApp.renderLists("albums");
-  //   }
-  // },
-  // deleteAlbums: function(event) {
-  //   if (event.target.classList.contains("delete")) {
-  //     var albumNode = event.target.parentNode.parentNode, // button > h3 > div
-  //         albumuid = albumNode.id;
-  //     RCApp.albums.some(function(album, index, array) {
-  //       if ("album_" + album.uid === albumuid) {
-  //         RCApp.albums.splice(index, 1);
-  //         return true;
-  //       }
-  //     });
-  //     RCApp.renderLists("artists");
-  //     RCApp.renderLists("albums");
-  //   }
-  // },
   renderArtists: function() {
     var artistsList = document.getElementById("artists-list");
     artistsList.innerHTML = "";
@@ -136,13 +108,13 @@ var RCApp = {
       var button = document.createElement("button");
       button.className = classes;
       return button;
-    })("delete btn btn-danger glyphicon glyphicon-remove"),
+    })("delete float-right btn btn-danger glyphicon glyphicon-remove"),
 
     plusBtn: (function(classes) {
       var button = document.createElement("button");
       button.className = classes;
       return button;
-    })("plus btn btn-danger glyphicon glyphicon-plus"),
+    })("plus btn btn-success glyphicon glyphicon-plus"),
 
     selDropdown: function(showType) { // "artists" or "albums"
       var dropdown      = document.createElement("select"),
@@ -174,7 +146,6 @@ RCApp.updateCollection = function(parentType, parentId, addType, addId) {
 
   parentItem.collection.push(addItem.uid);
 };
-
 RCApp.findById = function(itemType, itemId) {
   var collection = RCApp[itemType], // artists or albums
       foundItem;
@@ -185,41 +156,6 @@ RCApp.findById = function(itemType, itemId) {
     }
   });
   return foundItem;
-};
-
-// Renders the sublist of albums under an artist or vice versa
-// itemType is that of the thing that owns the collection (not what it is collection of)
-RCApp.renderCollection = function(itemType, itemId) {
-  var item = RCApp.findById(itemType, itemId),
-      itemNode  = document.createElement("ul"),
-      selectli  = document.createElement("li"), // houses the dropdown to attach artist/album
-      selectForm,
-      collectionType;
-
-  collectionType = item.collectionType;
-  itemNode.classList.add("inner-list");
-
-  item.collection.forEach(function (objuid, index, array) {
-    var collectionli = document.createElement("li"),
-        obj = RCApp.findById(collectionType, objuid);
-
-    if (typeof obj === "undefined") {
-      // if object isn't found it was probably deleted, so remove from the collection
-      array.splice(index, 1)
-    } else {
-      collectionli.innerHTML = obj.title || obj.name;
-      itemNode.appendChild(collectionli);
-    }
-  });
-
-  // Get the right dropdown (assign artists to albums, vice versa)
-  selectForm = RCApp.htmlEls.selDropdown(collectionType);
-
-  selectli.appendChild(selectForm);
-  selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
-
-  itemNode.appendChild(selectli);
-  return itemNode;
 };
 
 // Render the macro level lists
@@ -249,7 +185,6 @@ RCApp.renderLists = function(listType) { // "artists" or "albums"
     listNode.appendChild(itemNode);
   });
 }
-
 // Render a single "card" (artist or album): renderSelf() for each just calls this)
 // type is "albums" or "artists"
 RCApp.renderCard = function(type, headerNode, detailNode, thisObj) {
@@ -284,3 +219,37 @@ RCApp.renderCard = function(type, headerNode, detailNode, thisObj) {
   }, false);
   return cardNode;
 }
+// Renders the sublist of albums under an artist or vice versa
+// itemType is that of the thing that owns the collection (not what it is collection of)
+RCApp.renderCollection = function(itemType, itemId) {
+  var item = RCApp.findById(itemType, itemId),
+      itemNode  = document.createElement("ul"),
+      selectli  = document.createElement("li"), // houses the dropdown to attach artist/album
+      selectForm,
+      collectionType;
+
+  collectionType = item.collectionType;
+  itemNode.classList.add("inner-list");
+
+  item.collection.forEach(function (objuid, index, array) {
+    var collectionli = document.createElement("li"),
+        obj = RCApp.findById(collectionType, objuid);
+
+    if (typeof obj === "undefined") {
+      // if object isn't found it was probably deleted, so remove from the collection
+      array.splice(index, 1)
+    } else {
+      collectionli.innerHTML = obj.title || obj.name;
+      itemNode.appendChild(collectionli);
+    }
+  });
+
+  // Get the right dropdown (assign artists to albums, vice versa)
+  selectForm = RCApp.htmlEls.selDropdown(collectionType);
+
+  selectli.appendChild(selectForm);
+  selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
+
+  itemNode.appendChild(selectli);
+  return itemNode;
+};

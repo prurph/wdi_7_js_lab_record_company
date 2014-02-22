@@ -1,13 +1,78 @@
 ol, ul {
   list-style: none;
+  padding-left: 0;
+}
+
+h4 {
+  margin: 2px 0;
 }
 
 .hidden {
   display: none;
 }
 
-.album-dropdown {
-  width: 100px;
-  height: 41px;
+.card {
+  width: 100%;
+}
+
+.artist-header, .album-header {
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding-right: 8px;
+  padding-left: 10px;
+  border-radius: 4px;
+  background-color: #2C3E50; /* Midnight Blue */
+  color: #ECF0F1; /* Clouds */
+}
+
+.artist-header:hover, .album-header:hover {
+  background-color: #34495E;
+}
+
+#artists {
+  width: 50%;
+  margin-top: 5px;
   display: inline-block;
+}
+
+.form-control {
+  margin-top: 2px;
+}
+
+#newartist {
+  width: 100%;
+  margin: 2px 0;
+  text-align: left;
+}
+
+#newalbum-name, #newalbum-year, #newalbum-artist {
+  width: 30%;
+  display: inline-block;
+  margin: 1px;
+}
+
+#newalbum-year {
+  width: 19%;
+}
+
+.delete, .plus {
+  width: 32px;
+  height: 32px;
+  margin-top: 4px;
+}
+
+.float-right {
+  float: right;
+}
+.our-artists {
+  width: 50%;
+  text-align: left;
+  padding-left: 10px;
+  height: 90px;
+  line-height: 90px;
+  font-size: 60px;
+}
+
+.desc {
+  padding-left: 10px ;
 }

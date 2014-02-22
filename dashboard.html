@@ -13,28 +13,37 @@
 
 </head>
 <body>
-<div id="artists">
-  <input type="text" placeholder="newartist-name" id="newartist-name" class="form-control">
-  <input type="text" placeholder="newartist-desc" id="newartist-desc" class="form-control">
+  <div class="container">
+    <h3 class="float-right our-artists">Our Artists</h3>
+    <div id="artists">
+      <input type="text" placeholder="newartist-name" id="newartist-name" class="form-control">
+      <input type="text" placeholder="newartist-desc" id="newartist-desc" class="form-control">
+      <button type="button" id="newartist" class="btn btn-info">Add Artist</button>
 
-  <button type="button" id="newartist" class="btn btn-success">newartist</button>
-  <div class="artists-list">
-    <ul id="artists-list">
-    </ul>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="artists-list">
+          <ul id="artists-list">
+          </ul>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" id="albums">
+        <input type="text" placeholder="newalbum-name" id="newalbum-name" class="form-control">
+        <input type="text" placeholder="newalbum-year" id="newalbum-year" class="form-control">
+        <!-- Below is dummy node that is immediately replaced with JS dropdown -->
+        <span id="newalbum-artist"></span>
+
+        <button type="button" id="newalbum" class="btn btn-info">newalbum</button>
+      </div>
+    </div>
+    <div class="albums-list">
+      <ul id="albums-list">
+      </ul>
+    </div>
+
   </div>
-</div>
-<div id="albums">
-  <input type="text" placeholder="newalbum-name" id="newalbum-name" class="form-control">
-  <input type="text" placeholder="newalbum-year" id="newalbum-year" class="form-control">
-  <!-- Below is dummy node that is immediately replaced with JS dropdown -->
-  <span id="newalbum-artist"></span>
-
-  <button type="button" id="newalbum" class="btn btn-success">newalbum</button>
-  <div class="albums-list">
-    <ul id="albums-list">
-    </ul>
-  </div>
-</div>
-
 </body>
 </html>
