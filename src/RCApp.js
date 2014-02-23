@@ -30,17 +30,17 @@ var RCApp = {
     }
   },
   createAlbum: function(event) {
-    var userAlbum     = document.getElementById("newalbum-name"),
-        userYear      = document.getElementById("newalbum-year"),
-        artistuid     = parseInt(document.getElementById("newalbum-artist").value),
-        parent        = userAlbum.parentNode, // for attaching errors if required
+    var userAlbum  = document.getElementById("newalbum-name"),
+        userYear   = document.getElementById("newalbum-year"),
+        artistuid  = parseInt(document.getElementById("newalbum-artist").value),
+        parent     = userAlbum.parentNode, // for attaching errors if required
         newAlbum;
 
     event.preventDefault();
 
     try {
       if (isNaN(artistuid)) {
-        throw new Error("Must have artist");
+        throw new Error("Album must have artist");
       }
       newAlbum = new RCApp.album(userAlbum.value, userYear.value, artistuid);
       RCApp.albums.push(newAlbum);
@@ -49,9 +49,9 @@ var RCApp = {
       RCApp.updateCollection("albums", newAlbum.uid, "artists", artistuid);
       RCApp.updateCollection("artists", artistuid, "albums", newAlbum.uid);
 
-      userAlbum.value    = "";
-      userYear.value     = "";
-      artistuid.value    = "";
+      userAlbum.value = "";
+      userYear.value  = "";
+      artistuid.value = "";
       RCApp.renderLists("artists");
       RCApp.renderLists("albums");
     }
@@ -73,8 +73,8 @@ var RCApp = {
   },
   deleteItem: function(event) {
     if (event.target.classList.contains("delete")) {
-      var targetNode = event.target.parentNode.parentNode, // button > h3 > div with thing_uid
-          targetHTMLId   = targetNode.id, // artist_# or album_#
+      var targetNode = event.target.parentNode.parentNode, // button > h3 > div
+          targetHTMLId = targetNode.id, // artist_# or album_#
           targetType,
           targetuid;
 
@@ -114,10 +114,10 @@ var RCApp = {
       for(var i = 0; i < numOptions; i++) {
         newOption = document.createElement("option");
         newOption.innerHTML = optionList[i].name || optionList[i].title;
+        newOption.value     = optionList[i].uid;
         if (newOption.innerHTML.length > 45) {
           newOption.innerHTML = newOption.innerHTML.slice(0,44) + "..."
         }
-        newOption.value     = optionList[i].uid;
         dropdown.appendChild(newOption);
       }
       dropdown.className = "dropdown float-right form-control";
@@ -129,7 +129,7 @@ var RCApp = {
     errorMsg: function(error) {
       var needsName = document.getElementById("error") ||
                       document.createElement("div");
-      needsName.innerHTML += "<p>" + error.message + "</p>";
+      needsName.innerHTML  = "<p>" + error.message + "</p>";
       needsName.id         = "error"
       needsName.className  = "error-msg";
       return needsName;
@@ -164,14 +164,13 @@ RCApp.findById = function(itemType, itemId) {
 RCApp.renderLists = function(listType) { // "artists" or "albums"
   var listNode = document.getElementById(listType + "-list"),
       itemList = RCApp[listType],
-      // these are used to update the artist dropdown beneath the create album form
       albumsDiv,
       existingDropdown,
       updatedDropdown;
 
   RCApp.clearError();
-
-  if (listType === "albums") { // if we're rendering albums, update the artist dropdown
+  // if we're rendering albums, update the artist dropdown
+  if (listType === "albums") {
     albumsDiv         = document.getElementById("albums"),
     existingDropdown  = document.getElementById("newalbum-artist"),
     updatedDropdown   = RCApp.htmlEls.selDropdown("artists");
@@ -189,7 +188,7 @@ RCApp.renderLists = function(listType) { // "artists" or "albums"
     listNode.appendChild(itemNode);
   });
 }
-// Render a single "card" (artist or album): renderSelf() for each just calls this)
+// Render a single "card" (artist/album): renderSelf() for each just calls this)
 // type is "albums" or "artists"
 RCApp.renderCard = function(type, headerNode, detailNode, thisObj) {
   var cardNode = document.createElement("div"),
@@ -216,8 +215,10 @@ RCApp.renderCard = function(type, headerNode, detailNode, thisObj) {
       notInCollection = thisObj.inMyCollection(clickedId);
 
       if (notInCollection) {
-        RCApp.updateCollection(type, thisObj.uid, thisObj.collectionType, clickedId);
-        RCApp.updateCollection(thisObj.collectionType, clickedId, type, thisObj.uid);
+        RCApp.updateCollection(type, thisObj.uid,
+                               thisObj.collectionType, clickedId);
+        RCApp.updateCollection(thisObj.collectionType, clickedId,
+                               type, thisObj.uid);
         RCApp.renderLists("albums");
         RCApp.renderLists("artists");
       }
@@ -225,12 +226,12 @@ RCApp.renderCard = function(type, headerNode, detailNode, thisObj) {
   }, false);
   return cardNode;
 }
-// Renders the sublist of albums under an artist or vice versa
-// itemType is that of the thing that owns the collection (not what it is collection of)
+// Renders the sublist of albums under an artist or vice versa; pass itemType of
+// the thing that owns the collection
 RCApp.renderCollection = function(itemType, itemId) {
   var item = RCApp.findById(itemType, itemId),
       itemNode  = document.createElement("ul"),
-      selectli  = document.createElement("li"), // houses the dropdown to attach artist/album
+      selectli  = document.createElement("li"),
       selectForm,
       collectionType;
 

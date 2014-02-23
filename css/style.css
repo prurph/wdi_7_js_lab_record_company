@@ -98,8 +98,13 @@ header {
   color: white;
 }
 
-.delete:hover {
-  background-color: #ECF0F1;
+.artist-header > .delete:hover {
+  background-color: white;
+  color: #2C3E50;
+}
+
+.album-header > .delete:hover {
+  background-color: white;
   color: #D35400;
 }
 
@@ -129,11 +134,11 @@ header {
 .desc {
   margin-top: 3px;
   padding-left: 10px;
-  max-height: 500px;
+  max-height: 700px;
   overflow: hidden;
-  -moz-transition: max-height .6s ease-in-out;
-  -webkit-transition: max-height .6s ease-in-out;
-  transition: max-height .6s ease-in-out;
+  -moz-transition: max-height .5s;
+  -webkit-transition: max-height .5s;
+  transition: max-height .5s;
 }
 
 .desc.hideme {
@@ -154,16 +159,17 @@ header {
 }
 
 .error-msg {
-  position: absolute;
-  top: 8px;
-  left: -180px;
-  width: 180px;
-  height: 40px;
+  height: 26px;
   overflow: hidden;
-  color: #9B59B6;
-  line-height: 18px;
-  text-align: right;
-  padding-right: 5px;
+  background-color: #9B59B6;
+  color: #ECF0F1;
+  padding-left: 15px;
+  border-radius: 4px;
+}
+
+.error-msg p {
+  margin: 0;
+  line-height: 24px;
 }
 
 @media (max-width: 1199px) {
