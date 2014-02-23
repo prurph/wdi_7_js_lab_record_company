@@ -8,6 +8,7 @@ RCApp.album = function(title, year, artistuid) {
   this.uid         = RCApp.uid("album");
   this.collection  = []; // artistuids
   this.collectionType = "artists";
+  this.isHidden    = false;
 };
 
 RCApp.album.prototype = {

@@ -2,9 +2,30 @@ ol, ul {
   list-style: none;
   padding-left: 0;
 }
-
 h4 {
   margin: 2px 0;
+}
+
+header {
+  background-color: #2C3E50;
+  color: #7F8C8D; /* Asbestos */
+  width: 100%;
+}
+
+.main-header {
+  width: 50%;
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-family: 'Kaushan Script', cursive;
+}
+
+.by-me {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  font-size: 12px;
+  line-height: 100%;
 }
 
 .card {
@@ -21,11 +42,20 @@ h4 {
   color: #ECF0F1; /* Clouds */
 }
 
-.artist-header:hover, .album-header:hover {
+.artist-header:hover {
   background-color: #34495E;
 }
 
-#artists, #albums {
+.album-header {
+  background-color: #D35400; /* Pumpkin */
+}
+
+.album-header:hover {
+  background-color: #E67E22; /* Carrot */
+}
+
+
+.half-page {
   width: 50%;
   margin-top: 5px;
   display: inline-block;
@@ -45,13 +75,30 @@ h4 {
   width: 32px;
   height: 32px;
   margin-top: 4px;
+  position: relative;
+  background-color: transparent;
 }
 
 .plus { /* move inside dropdown */
   position: relative;
   left: 395px;
   top: 3px;
+  color: #27AE60;
+}
+
+.plus:hover {
   background-color: #27AE60;
+}
+
+.delete:hover {
+  background-color: #ECF0F1;
+  color: #D35400;
+}
+
+.glyphicon-plus:before, .glyphicon-remove:before {
+  position: absolute;
+  top: 7px;
+  left: 9px;
 }
 
 .float-right {
@@ -64,6 +111,10 @@ h4 {
   height: 90px;
   line-height: 90px;
   font-size: 50px;
+}
+
+.their-albums {
+  color: #D35400; /* Pumpkin */
 }
 
 .desc {
@@ -90,6 +141,7 @@ h4 {
 
 .inner-list li:last-child {
   color: #27AE60;
+  color: #7F8C8D; /* Asbestos */
 }
 
 @media (max-width: 1199px) {

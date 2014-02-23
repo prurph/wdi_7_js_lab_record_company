@@ -5,6 +5,7 @@
   <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="./css/flat-ui.css">
   <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
 
   <script src="./src/RCApp.js"></script>
   <script src="./src/artist.js"></script>
@@ -13,11 +14,20 @@
 
 </head>
 <body>
+  <header>
+    <div class="container">
+      <div class="row">
+      <div class="col-xs-12">
+        <h1 class="main-header">Tiny Tunes <span class="by-me">by Prescott</span></h1>
+      </div>
+      </div>
+    </div>
+  </header>
   <div class="container">
     <h3 class="float-right our-artists">Our Artists</h3>
-    <div id="artists">
-      <input type="text" placeholder="New Artist Name" id="newartist-name" class="form-control">
-      <input type="text" placeholder="New Artist Description" id="newartist-desc" class="form-control">
+    <div id="artists" class="half-page">
+      <input type="text" placeholder="New Artist Name" id="newartist-name" class="form-control pform">
+      <input type="text" placeholder="New Artist Description" id="newartist-desc" class="form-control pform">
       <button type="button" id="newartist" class="btn btn-info">Add Artist</button>
 
       <div class="row">
@@ -29,15 +39,14 @@
         </div>
       </div>
     </div>
-
     <h3 class="float-right their-albums">Their Albums</h3>
-    <div id="albums">
+    <div id="albums" class="half-page">
       <input type="text" placeholder="New Album Name" id="newalbum-name" class="form-control">
       <input type="text" placeholder="Release Year" id="newalbum-year" class="form-control">
       <!-- Below is dummy node that is immediately replaced with JS dropdown -->
       <span id="newalbum-artist"></span>
 
-      <button type="button" id="newalbum" class="btn btn-info">Add Album</button>
+      <button type="button" id="newalbum" class="btn btn-danger">Add Album</button>
 
       <div class="row">
         <div class="col-xs-12">

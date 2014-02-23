@@ -46,7 +46,7 @@ var RCApp = {
     var targetedDesc = event.target.nextSibling;
 
     if (event.target.classList.contains("artist-header") ||
-       event.target.classList.contains("album-header")) {
+        event.target.classList.contains("album-header")) {
       if (targetedDesc.classList.contains("hideme")) {
         targetedDesc.classList.remove("hideme");
       } else {
@@ -75,7 +75,7 @@ var RCApp = {
       RCApp.renderLists("albums");
     }
   },
-  htmlEls: {
+  htmlEls: { // buttons and dropdown
     deleteBtn: (function(classes) {
       var button = document.createElement("button");
       button.className = classes;
@@ -100,6 +100,9 @@ var RCApp = {
         dropdown.appendChild(newOption);
       }
       dropdown.className = "dropdown float-right form-control";
+      if (numOptions === 0) {
+        dropdown.disabled = "disabled" // disable if no options (fresh page)
+      }
       return dropdown;
     }
   },
@@ -208,7 +211,7 @@ RCApp.renderCollection = function(itemType, itemId) {
         obj = RCApp.findById(collectionType, objuid);
 
     if (typeof obj === "undefined") {
-      // if object isn't found it was probably deleted, so remove from the collection
+      // if object isn't found it was deleted, so remove from the collection
       array.splice(index, 1)
     } else {
       collectionli.innerHTML = obj.name || obj.title + " (" + obj.year + ")"
