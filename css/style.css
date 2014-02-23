@@ -59,6 +59,7 @@ header {
   width: 50%;
   margin-top: 5px;
   display: inline-block;
+  position: relative;
 }
 
 .form-control {
@@ -79,7 +80,7 @@ header {
   background-color: transparent;
 }
 
-.plus, .plus:focus { /* move inside dropdown */
+.plus, .plus:focus { /* move inside dropdown; :focus is to override bootstrap */
   position: relative;
   left: 395px;
   top: 3px;
@@ -146,6 +147,19 @@ header {
   color: #7F8C8D; /* Asbestos */
 }
 
+.error-msg {
+  position: absolute;
+  top: 8px;
+  left: -180px;
+  width: 180px;
+  height: 40px;
+  overflow: hidden;
+  color: #9B59B6;
+  line-height: 18px;
+  text-align: right;
+  padding-right: 5px;
+}
+
 @media (max-width: 1199px) {
   .plus {
     left: 290px;
@@ -157,3 +171,4 @@ header {
     left: 180px;
   }
 }
+

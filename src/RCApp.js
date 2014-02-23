@@ -11,38 +11,53 @@ var RCApp = {
   createArtist: function(event) {
     var userArtist = document.getElementById("newartist-name"),
         userDesc   = document.getElementById("newartist-desc"),
+        parent     = userArtist.parentNode,
         newArtist;
 
     event.preventDefault();
 
-    newArtist = new RCApp.artist(userArtist.value, userDesc.value);
-    RCApp.artists.push(newArtist);
+    try {
+      newArtist = new RCApp.artist(userArtist.value, userDesc.value);
+      RCApp.artists.push(newArtist);
 
-    userArtist.value = "";
-    userDesc.value   = "";
-    RCApp.renderLists("artists");
-    RCApp.renderLists("albums");
+      userArtist.value = "";
+      userDesc.value   = "";
+      RCApp.renderLists("artists");
+      RCApp.renderLists("albums");
+    }
+    catch (e) {
+      parent.insertBefore(RCApp.htmlEls.errorMsg(e), parent.firstChild);
+    }
   },
   createAlbum: function(event) {
     var userAlbum     = document.getElementById("newalbum-name"),
         userYear      = document.getElementById("newalbum-year"),
         artistuid     = parseInt(document.getElementById("newalbum-artist").value),
+        parent        = userAlbum.parentNode, // for attaching errors if required
         newAlbum;
 
     event.preventDefault();
 
-    newAlbum = new RCApp.album(userAlbum.value, userYear.value, artistuid);
-    RCApp.albums.push(newAlbum);
+    try {
+      if (isNaN(artistuid)) {
+        throw new Error("Must have artist");
+      }
+      newAlbum = new RCApp.album(userAlbum.value, userYear.value, artistuid);
+      RCApp.albums.push(newAlbum);
 
-    // Link the artist and album
-    RCApp.updateCollection("albums", newAlbum.uid, "artists", artistuid);
-    RCApp.updateCollection("artists", artistuid, "albums", newAlbum.uid);
+      // Link the artist and album
+      RCApp.updateCollection("albums", newAlbum.uid, "artists", artistuid);
+      RCApp.updateCollection("artists", artistuid, "albums", newAlbum.uid);
 
-    userAlbum.value    = "";
-    userYear.value     = "";
-    artistuid.value    = "";
-    RCApp.renderLists("artists");
-    RCApp.renderLists("albums");
+      userAlbum.value    = "";
+      userYear.value     = "";
+      artistuid.value    = "";
+      RCApp.renderLists("artists");
+      RCApp.renderLists("albums");
+    }
+    catch (e) {
+      parent.insertBefore(RCApp.htmlEls.errorMsg(e), parent.firstChild);
+    }
   },
   toggleShow: function(name) {
     var targetedDesc = event.target.nextSibling;
@@ -107,6 +122,14 @@ var RCApp = {
         dropdown.disabled = "disabled" // disable if no options (fresh page)
       }
       return dropdown;
+    },
+    errorMsg: function(error) {
+      var needsName = document.getElementById("error") ||
+                      document.createElement("div");
+      needsName.innerHTML += "<p>" + error.message + "</p>";
+      needsName.id         = "error"
+      needsName.className  = "error-msg";
+      return needsName;
     }
   }
 };
@@ -142,6 +165,8 @@ RCApp.renderLists = function(listType) { // "artists" or "albums"
       albumsDiv,
       existingDropdown,
       updatedDropdown;
+
+  RCApp.clearError();
 
   if (listType === "albums") { // if we're rendering albums, update the artist dropdown
     albumsDiv         = document.getElementById("albums"),
@@ -250,4 +275,11 @@ RCApp.makeDetail = function(item) {
   detailNode.innerHTML = "<h4>" + (item.year || item.desc) + "</h4>";
   detailNode.appendChild(assocDropdown);
   return detailNode;
+}
+
+RCApp.clearError = function() {
+  var errorMsg = document.getElementById("error");
+  if (errorMsg) {
+    errorMsg.parentNode.removeChild(errorMsg);
+  }
 }
