@@ -3,7 +3,7 @@ RCApp.album = function(title, year, artistuid) {
     throw new Error("Album must have title");
   }
   this.title          = title;
-  this.year           = year;
+  this.year           = year || "No Year";
   this.uid            = RCApp.uid("album");
   this.collection     = []; // artistuids
   this.collectionType = "artists";

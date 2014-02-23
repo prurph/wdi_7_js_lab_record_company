@@ -114,6 +114,9 @@ var RCApp = {
       for(var i = 0; i < numOptions; i++) {
         newOption = document.createElement("option");
         newOption.innerHTML = optionList[i].name || optionList[i].title;
+        if (newOption.innerHTML.length > 45) {
+          newOption.innerHTML = newOption.innerHTML.slice(0,44) + "..."
+        }
         newOption.value     = optionList[i].uid;
         dropdown.appendChild(newOption);
       }
@@ -251,7 +254,10 @@ RCApp.renderCollection = function(itemType, itemId) {
   selectForm = RCApp.htmlEls.selDropdown(collectionType);
   selectli.innerHTML = "Add association";
   selectli.appendChild(selectForm);
-  selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
+
+  if (!selectForm.disabled) { // Doesn't need plus button if disabled
+    selectli.appendChild(RCApp.htmlEls.plusBtn.cloneNode());
+  }
 
   itemNode.appendChild(selectli);
   return itemNode;
