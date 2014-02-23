@@ -172,7 +172,10 @@ RCApp.renderCard = function(type, headerNode, detailNode, thisObj) {
   cardNode.classList.add("card");
   cardNode.appendChild(headerNode);
 
-  detailNode.appendChild(RCApp.renderCollection(type, thisObj.uid))
+  // Replace the ul; any user action that causes a rerender changes info in
+  // the dropdown so this is necessary
+  detailNode.replaceChild(RCApp.renderCollection(type, thisObj.uid),
+                          detailNode.lastChild);
   cardNode.appendChild(detailNode);
 
   cardNode.addEventListener("click", function(event) {
@@ -228,3 +231,21 @@ RCApp.renderCollection = function(itemType, itemId) {
   itemNode.appendChild(selectli);
   return itemNode;
 };
+
+RCApp.makeHeader = function(item, itemType) {
+  var h3 = document.createElement("h3"),
+      button = RCApp.htmlEls.deleteBtn;
+
+  button.setAttribute("id", "del" + itemType + "_" + item.uid);
+  h3.className = itemType + "-header"
+  h3.appendChild(button);
+  h3.innerHTML += item.title || item.name;
+  return h3;
+};
+
+RCApp.makeDetail = function(item) {
+  var detailNode = document.createElement("div");
+  detailNode.className = "desc";
+  detailNode.innerHTML = "<h4>" + (item.year || item.desc) + "</h4>";
+  return detailNode;
+}

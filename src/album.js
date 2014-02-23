@@ -8,13 +8,14 @@ RCApp.album = function(title, year, artistuid) {
   this.uid         = RCApp.uid("album");
   this.collection  = []; // artistuids
   this.collectionType = "artists";
-  this.isHidden    = false;
+  this.header      = RCApp.makeHeader(this, "album");
+  this.detail      = RCApp.makeDetail(this);
 };
 
 RCApp.album.prototype = {
   renderSelf: function() {
-    var headerNode = this.htmlElements.header.bind(this)(),
-        detailNode = this.htmlElements.detail.bind(this)(),
+    var headerNode = this.header, // this.htmlElements.header.bind(this)(),
+        detailNode = this.detail, // this.htmlElements.detail.bind(this)(),
         thisAlbum  = this;
     return RCApp.renderCard("albums", headerNode, detailNode, thisAlbum);
   },
