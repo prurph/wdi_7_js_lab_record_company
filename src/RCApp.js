@@ -6,6 +6,8 @@ var RCApp = {
       return (type === "artist") ? uidArtist++ : uidAlbum++;
     };
   })(),
+  artists: [],
+  albums:  [],
   createArtist: function(event) {
     var userArtist = document.getElementById("newartist-name"),
         userDesc   = document.getElementById("newartist-desc"),
@@ -61,6 +63,7 @@ var RCApp = {
           targetType,
           targetuid;
 
+      // parse artist_0 into "artists" and 0
       targetHTMLId = targetHTMLId.split("_")
       targetType = targetHTMLId[0] + "s"
       targetuid  = parseInt(targetHTMLId[1])
@@ -105,9 +108,7 @@ var RCApp = {
       }
       return dropdown;
     }
-  },
-  artists: [],
-  albums:  []
+  }
 };
 
 // If user adds an artist to an album (or vice versa), make sure that album gets
@@ -180,12 +181,11 @@ RCApp.renderCard = function(type, headerNode, detailNode, thisObj) {
 
   cardNode.addEventListener("click", function(event) {
     if (event.target.classList.contains("plus")) {
+      // get the uid from the select the plus button is the next sibling of
       var clickedId = parseInt(event.target.previousElementSibling.value),
       notInCollection;
 
-      notInCollection = thisObj.collection.every(function(collobjuid, index, array){
-        return (collobjuid != clickedId);
-      });
+      notInCollection = thisObj.inMyCollection(clickedId);
 
       if (notInCollection) {
         RCApp.updateCollection(type, thisObj.uid, thisObj.collectionType, clickedId);
@@ -244,8 +244,10 @@ RCApp.makeHeader = function(item, itemType) {
 };
 
 RCApp.makeDetail = function(item) {
-  var detailNode = document.createElement("div");
+  var detailNode    = document.createElement("div"),
+      assocDropdown = document.createElement("ul");
   detailNode.className = "desc";
   detailNode.innerHTML = "<h4>" + (item.year || item.desc) + "</h4>";
+  detailNode.appendChild(assocDropdown);
   return detailNode;
 }
