@@ -71,7 +71,7 @@ header {
   text-align: left;
 }
 
-.delete, .plus {
+.delete, .plus, .plus:focus {
   width: 32px;
   height: 32px;
   margin-top: 4px;
@@ -79,7 +79,7 @@ header {
   background-color: transparent;
 }
 
-.plus { /* move inside dropdown */
+.plus, .plus:focus { /* move inside dropdown */
   position: relative;
   left: 395px;
   top: 3px;
@@ -88,6 +88,7 @@ header {
 
 .plus:hover {
   background-color: #27AE60;
+  color: white;
 }
 
 .delete:hover {

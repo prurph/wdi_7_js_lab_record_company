@@ -19,8 +19,10 @@ RCApp.artist.prototype = {
     return RCApp.renderCard("artists", headerNode, detailNode, thisArtist);
   },
   inMyCollection: function(clickedId) {
-    this.collection.every(function(objuid, index, array) {
+    var inCollection;
+    inCollection = this.collection.every(function(objuid, index, array) {
       return (objuid !== clickedId);
-    }
-  )}
+    });
+    return inCollection;
+  }
 }
