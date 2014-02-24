@@ -182,9 +182,11 @@ RCApp.renderLists = function(listType) { // "artists" or "albums"
   listNode.innerHTML = "";
 
   itemList.forEach(function(obj, index, array) {
-    var itemNode = obj.renderSelf();
-    itemNode.insertAdjacentHTML("beforebegin", "<li>");
-    itemNode.insertAdjacentHTML("afterend", "</li>");
+    var itemNode  = obj.renderSelf(),
+        liWrapper = document.createElement("li");
+    // itemNode.insertAdjacentHTML("beforebegin", "<li>");
+    // itemNode.insertAdjacentHTML("afterend", "</li>");
+    liWrapper.appendChild(itemNode);
     listNode.appendChild(itemNode);
   });
 }
