@@ -173,14 +173,14 @@ header {
 }
 
 @media (max-width: 1199px) {
-  .plus {
+  .plus, .plus:focus {
     left: 422px;
     top: -27px;
   }
 }
 
 @media (max-width: 991px) {
-  .plus {
+  .plus, .plus:focus {
     left: 189px;
     top: 38px;
   }
